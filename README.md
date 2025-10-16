@@ -22,6 +22,7 @@ Utskrift:
 - Min- och maxvärde
 - Varians
 - Standardavvikelse
+
 sortValues()  - Syftet är att sortera mätvärdena i stigande ordning med hjälp av en enkel bubbelsorteringsalgoritm.
 Skriv ut:
 - Visar sorterade värden rad för rad.
