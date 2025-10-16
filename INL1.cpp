@@ -5,6 +5,8 @@
 #include <windows.h>
 #include <locale>
 #include <cmath>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -102,7 +104,7 @@ void searchValue() {
     cin >> sökt;
     bool hittad = false;
     for (int i = 0; i < antal; i++) {
-        if (mätvärden[i] == sökt) {
+        if (mätvärden[i] == sökt) { 
             cout << "Värdet " << sökt << " hittades på position " << (i + 1) << ".\n";
             hittad = true;
         }
@@ -111,12 +113,38 @@ void searchValue() {
         cout << "Värdet hittades inte.\n";
     }
 }
+// Extra utmaningar: Funktion för att Sensor simulering.
+void simulateSensor() {
+    if (antal >= MAX) {
+        cout << "Max antal mätvärden har redan nåtts.\n";
+        return;
+    }
+
+    int antalSimuleringar;
+    cout << "Hur många mätvärden vill du simulera?\n";
+    cin >> antalSimuleringar;
+
+    if (antalSimuleringar <= 0 || antalSimuleringar > (MAX - antal)) {
+        cout << "Ogiltigt antal. Max tillgängliga platser: " << (MAX - antal) << "\n";
+        return;
+    }
+
+    srand(static_cast<unsigned int>(time(nullptr))); // Initiera slumpgenerator, så att värdena som produceras av rand() är olika varje gång programmet körs.
+
+    for (int i = 0; i < antalSimuleringar; i++) {
+        double slumpvärde = 20.0 + static_cast<double>(rand()) / RAND_MAX * 10.0; // 20–30 °C
+        mätvärden [antal++] = slumpvärde;
+        cout << "Simulerat värde " << (antal) << ": " << slumpvärde << " °C\n";
+    }
+
+    cout << "Sensorvärden har genererats och lagrats.\n";
+}
 
 int main() {
-
+    
     SetConsoleOutputCP(CP_UTF8);
     setlocale(LC_ALL, "SV_se");
-    cout << "Hej världen!\n";
+    cout << "Hej! Välkommen till mitt inlämningsuppgift.\n";
 
 	MeasureInValues();
 
@@ -127,7 +155,8 @@ int main() {
         cout << "2. Visa statistiken\n";
         cout << "3. Sortera mätvärden\n";
         cout << "4. Sök efter ett visst värde\n";
-        cout << "5. Avsluta\n";
+        cout << "5. Simulera sensorvärden\n";
+        cout << "6. Avsluta\n";
         cout << "Ditt val: ";
         cin >> val;
 
@@ -140,10 +169,12 @@ int main() {
             break;
         case 4: searchValue(); 
 			break;
-        case 5: cout << "Avslutar programmet.\n"; 
+        case 5: simulateSensor();
+            break;
+        case 6: cout << "Avslutar programmet.\n"; 
             break;
         }
-    } while (val != 5 && antal < MAX);
+    } while (val != 6 && antal < MAX);
 
     if (antal == MAX) {
         cout << "Max antal mätvärden nått, avslutar programmet.\n";
